@@ -1,0 +1,212 @@
+# Python Requirements for Industrial IoT Lakehouse Project
+# Install with: pip install -r requirements.txt
+
+# =================================================================
+# CORE DATA PROCESSING LIBRARIES
+# =================================================================
+pandas>=2.0.0                    # Data manipulation and analysis
+numpy>=1.24.0                    # Numerical computing foundation
+scipy>=1.11.0                    # Scientific computing algorithms
+
+# =================================================================
+# KAFKA STREAMING AND MESSAGING
+# =================================================================
+kafka-python>=2.0.2              # Native Python Kafka client
+confluent-kafka>=2.3.0           # High-performance Kafka client (alternative)
+avro-python3>=1.11.0             # Avro serialization support
+
+# =================================================================
+# APACHE SPARK AND DISTRIBUTED PROCESSING
+# =================================================================
+pyspark>=3.5.0                   # Distributed data processing engine
+findspark>=2.0.1                 # Helper to find Spark installation
+py4j>=0.10.9.7                   # Java-Python bridge for Spark
+
+# =================================================================
+# STORAGE AND DATA LAKE COMPONENTS
+# =================================================================
+pyarrow>=14.0.0                  # Columnar data format (Parquet, Arrow)
+boto3>=1.29.0                    # AWS SDK for S3/MinIO operations
+s3fs>=2023.10.0                  # S3-compatible filesystem interface
+minio>=7.2.0                     # MinIO Python client
+
+# =================================================================
+# ICEBERG DATA LAKE FORMAT
+# =================================================================
+# Note: Apache Iceberg Python integration is still evolving
+# These are the core dependencies for Iceberg support
+apache-iceberg>=0.5.0            # Iceberg table format
+pyiceberg>=0.5.0                 # Python Iceberg implementation
+
+# =================================================================
+# DATABASE CONNECTIVITY AND QUERYING
+# =================================================================
+sqlalchemy>=2.0.0                # SQL toolkit and ORM
+psycopg2-binary>=2.9.7           # PostgreSQL adapter
+pymysql>=1.1.0                   # MySQL connector
+cx-Oracle>=8.3.0                 # Oracle database connector (optional)
+pyodbc>=4.0.39                   # ODBC database connectivity
+
+# =================================================================
+# API CLIENTS AND HTTP REQUESTS
+# =================================================================
+requests>=2.31.0                 # HTTP library for API calls
+urllib3>=2.0.0                   # HTTP client library
+httpx>=0.25.0                    # Modern async HTTP client
+aiohttp>=3.9.0                   # Async HTTP client/server
+
+# =================================================================
+# DREMIO AND ARROW FLIGHT CONNECTIVITY
+# =================================================================
+pyarrow[flight]>=14.0.0          # Arrow Flight for Dremio connectivity
+dremio-client>=0.2.0             # Dremio Python client (if available)
+
+# =================================================================
+# APACHE SUPERSET INTEGRATION
+# =================================================================
+apache-superset>=3.0.0           # Superset for creating programmatic dashboards
+sqlalchemy-dremio>=1.2.1         # Dremio SQLAlchemy dialect
+
+# =================================================================
+# CONFIGURATION AND ENVIRONMENT MANAGEMENT
+# =================================================================
+python-dotenv>=1.0.0             # Load environment variables from .env
+pyyaml>=6.0.1                    # YAML configuration file parsing
+configparser>=5.3.0              # INI configuration file parsing
+hydra-core>=1.3.0                # Advanced configuration management
+
+# =================================================================
+# LOGGING, MONITORING, AND OBSERVABILITY
+# =================================================================
+structlog>=23.2.0                # Structured logging
+prometheus-client>=0.19.0        # Prometheus metrics collection
+opentelemetry-api>=1.21.0        # OpenTelemetry observability
+opentelemetry-sdk>=1.21.0        # OpenTelemetry SDK
+loguru>=0.7.0                    # Enhanced logging library
+
+# =================================================================
+# DATA VALIDATION AND QUALITY
+# =================================================================
+great-expectations>=0.18.0       # Data validation and profiling
+pandera>=0.17.0                  # DataFrame validation schemas
+cerberus>=1.3.4                  # Schema validation
+marshmallow>=3.20.0              # Object serialization/validation
+
+# =================================================================
+# SCHEDULING AND WORKFLOW ORCHESTRATION
+# =================================================================
+apache-airflow>=2.7.0            # Workflow orchestration (optional)
+celery>=5.3.0                    # Distributed task queue
+redis>=5.0.0                     # In-memory data store for Celery
+
+# =================================================================
+# MACHINE LEARNING AND ANALYTICS
+# =================================================================
+scikit-learn>=1.3.0              # Machine learning algorithms
+matplotlib>=3.7.0                # Plotting and visualization
+seaborn>=0.12.0                  # Statistical data visualization
+plotly>=5.17.0                   # Interactive plotting
+jupyter>=1.0.0                   # Jupyter notebook environment
+ipykernel>=6.25.0                # Jupyter kernel for Python
+
+# =================================================================
+# COMMAND LINE INTERFACE AND USER INTERACTION
+# =================================================================
+click>=8.1.0                     # Command line interface creation
+typer>=0.9.0                     # Modern CLI library built on Click
+rich>=13.7.0                     # Rich text and beautiful formatting
+inquirer>=3.1.0                  # Interactive command line prompts
+
+# =================================================================
+# DEVELOPMENT AND TESTING TOOLS
+# =================================================================
+pytest>=7.4.0                    # Testing framework
+pytest-cov>=4.1.0                # Coverage reporting for tests
+pytest-mock>=3.12.0              # Mocking utilities for tests
+pytest-asyncio>=0.21.0           # Async testing support
+
+# Code formatting and linting
+black>=23.0.0                    # Code formatting
+isort>=5.12.0                    # Import statement sorting
+flake8>=6.0.0                    # Style guide enforcement
+mypy>=1.7.0                      # Static type checking
+pre-commit>=3.5.0                # Git pre-commit hooks
+
+# =================================================================
+# PERFORMANCE AND PROFILING
+# =================================================================
+memory-profiler>=0.61.0          # Memory usage profiling
+psutil>=5.9.0                    # System and process utilities
+py-spy>=0.3.14                   # Sampling profiler for Python
+
+# =================================================================
+# UTILITY LIBRARIES
+# =================================================================
+tqdm>=4.66.0                     # Progress bars for long operations
+colorama>=0.4.6                  # Cross-platform colored terminal output
+tabulate>=0.9.0                  # Pretty-print tabular data
+humanize>=4.8.0                  # Human-readable numbers and dates
+python-dateutil>=2.8.0           # Extended date parsing capabilities
+
+# =================================================================
+# SECURITY AND AUTHENTICATION
+# =================================================================
+cryptography>=41.0.0             # Cryptographic recipes and primitives
+pyjwt>=2.8.0                     # JSON Web Token implementation
+bcrypt>=4.1.0                    # Modern password hashing
+
+# =================================================================
+# DATA SERIALIZATION AND FORMATS
+# =================================================================
+orjson>=3.9.0                    # Fast JSON serialization
+msgpack>=1.0.7                   # Efficient binary serialization
+protobuf>=4.25.0                 # Protocol Buffers
+
+# =================================================================
+# DOCKER AND CONTAINERIZATION SUPPORT
+# =================================================================
+docker>=6.1.0                    # Docker SDK for Python
+docker-compose>=1.29.0           # Docker Compose programmatic interface
+
+# =================================================================
+# OPTIONAL: ADVANCED ANALYTICS AND TIME SERIES
+# =================================================================
+# Uncomment these if you need advanced time series analysis
+# prophet>=1.1.4                 # Time series forecasting
+# statsmodels>=0.14.0            # Statistical modeling
+# pystan>=3.8.0                  # Bayesian inference engine
+
+# =================================================================
+# SPARK ADDITIONAL CONNECTORS (Optional but recommended)
+# =================================================================
+# These might need to be added to Spark classpath rather than pip install
+# pyspark[sql]>=3.5.0            # Additional SQL functionality
+# delta-spark>=3.0.0             # Delta Lake format support
+
+# =================================================================
+# VERSION COMPATIBILITY NOTES
+# =================================================================
+# Python 3.8+ required for most packages
+# Spark 3.5+ required for latest Iceberg integration
+# Make sure all Arrow-related packages use the same version
+# Some packages might conflict - test in a clean environment
+
+# =================================================================
+# INSTALLATION NOTES
+# =================================================================
+# For production deployment, consider pinning exact versions
+# Use `pip-tools` to generate exact version lockfiles
+# Some packages require additional system dependencies:
+# - pyarrow may need specific Arrow C++ libraries
+# - psycopg2 requires PostgreSQL development headers
+# - Some ML packages need BLAS/LAPACK libraries
+
+# =================================================================
+# SPARK JARS AND ADDITIONAL DEPENDENCIES
+# =================================================================
+# Note: These are not Python packages but Java JARs needed for Spark
+# Download separately and add to Spark classpath:
+# - Iceberg Spark runtime JAR
+# - Kafka Spark connector JAR
+# - AWS SDK JARs for S3 connectivity
+# - Nessie Spark integration JAR
