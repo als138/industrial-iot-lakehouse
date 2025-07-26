@@ -195,10 +195,10 @@ check_system_requirements() {
         exit 1
     fi
     
-    python_version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+    python_version=$(python3 -c "import sys; print('.'.join(map(str, sys.version_info[:2])))")
     log_info "Python version: $python_version"
     
-    if python3 -c 'import sys; exit(0 if sys.version_info >= (3, 8) else 1)'; then
+    if python3 -c "import sys; exit(0 if sys.version_info >= (3, 8) else 1)"; then
         log_success "Python version is compatible"
     else
         log_error "Python 3.8+ is required, found $python_version"
@@ -446,19 +446,38 @@ create_sample_dataset() {
         return 0
     fi
     
-    log_header "CREATING SAMPLE DATASET"
+    log_header "CHECKING FOR DATASET"
     
+    # Check if dataset already exists
     if [ -f "$DATASET_FILE" ]; then
-        log_info "Dataset already exists: $DATASET_FILE"
+        log_success "Dataset already exists: $DATASET_FILE"
         return 0
     fi
     
-    log_info "Creating sample industrial IoT dataset..."
+    # Check if dataset is in current directory
+    if [ -f "industrial-iot-dataset.csv" ]; then
+        log_info "Moving dataset to proper location..."
+        mv industrial-iot-dataset.csv "$DATASET_FILE"
+        log_success "Dataset moved to: $DATASET_FILE"
+        return 0
+    fi
     
-    # Activate virtual environment
-    source "$VENV_NAME/bin/activate"
+    log_warning "No dataset found. You have the following options:"
+    echo "1. Place your dataset at: $DATASET_FILE"
+    echo "2. Continue setup and add dataset later"
+    echo "3. Create a sample dataset for testing"
+    echo ""
+    echo -n "Would you like to create a sample dataset? (y/n): "
+    read -r create_sample
     
-    python3 << 'EOF'
+    if [ "$create_sample" = "y" ] || [ "$create_sample" = "Y" ]; then
+        log_info "Creating sample industrial IoT dataset..."
+        
+        # Activate virtual environment
+        source "$VENV_NAME/bin/activate"
+        
+        # Create dataset with Python
+        python3 -c "
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -467,77 +486,48 @@ import os
 # Ensure directory exists
 os.makedirs('data/raw', exist_ok=True)
 
-# Generate realistic industrial IoT data
+# Generate sample data
 np.random.seed(42)
-n_sensors = 20
-days_of_data = 7
-readings_per_hour = 12  # Every 5 minutes
+n_sensors = 10
+n_records = 1000
 
 data = []
-start_time = datetime.now() - timedelta(days=days_of_data)
+start_time = datetime.now() - timedelta(days=7)
 
-locations = ["Plant_A_Unit_1", "Plant_A_Unit_2", "Plant_B_Unit_1", "Plant_B_Unit_2", "Plant_C_Unit_1"]
-equipment_types = ["Pump", "Compressor", "Motor", "Turbine", "Generator"]
-
-for sensor_id in range(1, n_sensors + 1):
-    location = locations[(sensor_id - 1) % len(locations)]
-    equipment_type = equipment_types[(sensor_id - 1) % len(equipment_types)]
+for i in range(n_records):
+    sensor_id = f'sensor_{(i % n_sensors) + 1:03d}'
+    timestamp = start_time + timedelta(minutes=i*5)
     
-    for day in range(days_of_data):
-        for hour in range(24):
-            for reading in range(readings_per_hour):
-                timestamp = start_time + timedelta(
-                    days=day, 
-                    hours=hour, 
-                    minutes=reading * 5
-                )
-                
-                # Generate realistic sensor readings with patterns
-                hour_factor = np.sin(hour * np.pi / 12) * 0.3  # Daily pattern
-                day_factor = np.sin(day * np.pi / 3.5) * 0.1   # Weekly pattern
-                
-                base_temp = 25 + hour_factor * 10 + day_factor * 5 + np.random.normal(0, 2)
-                vibration = 0.5 + np.abs(np.random.normal(0, 0.2)) + (base_temp - 25) * 0.01
-                pressure = 1.0 + np.random.normal(0, 0.15) + vibration * 0.2
-                
-                # Introduce realistic anomalies
-                anomaly_prob = 0.02  # 2% chance
-                if np.random.random() < anomaly_prob:
-                    anomaly_type = np.random.choice(['temp_spike', 'vibration_spike', 'pressure_drop'])
-                    if anomaly_type == 'temp_spike':
-                        base_temp += np.random.uniform(15, 25)
-                    elif anomaly_type == 'vibration_spike':
-                        vibration += np.random.uniform(1.0, 3.0)
-                    elif anomaly_type == 'pressure_drop':
-                        pressure *= np.random.uniform(0.3, 0.6)
-                
-                machine_status = 'NORMAL'
-                if base_temp > 45 or vibration > 2.0 or pressure < 0.5:
-                    machine_status = 'ALARM'
-                elif base_temp > 35 or vibration > 1.0 or pressure < 0.7:
-                    machine_status = 'WARNING'
-                
-                data.append({
-                    'sensor_id': f'sensor_{sensor_id:03d}',
-                    'timestamp': timestamp.isoformat(),
-                    'temperature': round(max(0, base_temp), 2),
-                    'vibration': round(max(0, vibration), 3),
-                    'pressure': round(max(0, pressure), 2),
-                    'machine_status': machine_status,
-                    'location': location,
-                    'equipment_type': equipment_type
-                })
+    # Generate realistic readings
+    temp = 25 + np.random.normal(0, 5)
+    vibration = 0.5 + np.random.exponential(0.3)
+    pressure = 1.0 + np.random.normal(0, 0.2)
+    
+    # Add occasional anomalies
+    if np.random.random() < 0.05:
+        temp += np.random.choice([-15, 15])
+        vibration += np.random.uniform(1, 3)
+    
+    data.append({
+        'sensor_id': sensor_id,
+        'timestamp': timestamp.isoformat(),
+        'temperature': round(max(0, temp), 2),
+        'vibration': round(max(0, vibration), 3),
+        'pressure': round(max(0, pressure), 2),
+        'machine_status': np.random.choice(['NORMAL', 'WARNING', 'ALARM'], p=[0.8, 0.15, 0.05]),
+        'location': f'Plant_A_Unit_{((i % n_sensors) // 2) + 1}',
+        'equipment_type': np.random.choice(['Pump', 'Compressor', 'Motor'])
+    })
 
 df = pd.DataFrame(data)
 df.to_csv('data/raw/industrial-iot-dataset.csv', index=False)
-print(f"Sample dataset created with {len(df)} records")
-print(f"Date range: {df['timestamp'].min()} to {df['timestamp'].max()}")
-print(f"Sensors: {df['sensor_id'].nunique()}")
-print(f"Locations: {df['location'].nunique()}")
-print(f"Equipment types: {df['equipment_type'].nunique()}")
-EOF
-    
-    log_success "Sample dataset created: $DATASET_FILE"
+print(f'Sample dataset created with {len(df)} records')
+"
+        
+        log_success "Sample dataset created: $DATASET_FILE"
+    else
+        log_info "Skipping dataset creation. You can add your dataset later."
+    fi
 }
 
 # Function to start Docker services
@@ -615,6 +605,3 @@ setup_minio() {
     # Install MinIO client if needed
     if ! command_exists mc; then
         log_info "Installing MinIO client..."
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS
-            brew install minio/stable/mc || {
