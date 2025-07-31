@@ -1,144 +1,92 @@
 version: '3.8'
-
 services:
-  # Zookeeper for Kafka coordination
+  # Zookeeper for Kafka
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
-    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
-    networks:
-      - lakehouse-network
 
-  # Apache Kafka for real-time data streaming
+  # Kafka for data ingestion
   kafka:
     image: confluentinc/cp-kafka:7.4.0
-    container_name: kafka
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
-      - "9094:9094"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_JMX_PORT: 9101
-      KAFKA_JMX_HOSTNAME: localhost
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-    networks:
-      - lakehouse-network
 
-  # MinIO for object storage (S3-compatible)
+  # MinIO for object storage
   minio:
     image: minio/minio:latest
-    container_name: minio
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
+      MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     volumes:
-      - minio-data:/data
-    networks:
-      - lakehouse-network
+      - minio_data:/data
 
-  # Nessie catalog for Iceberg table management
+  # Nessie for Iceberg catalog versioning
   nessie:
-    image: projectnessie/nessie:0.74.0
-    container_name: nessie
+    image: projectnessie/nessie:0.67.0
     ports:
       - "19120:19120"
     environment:
-      QUARKUS_LOG_LEVEL: INFO
-      QUARKUS_DATASOURCE_JDBC_URL: jdbc:h2:mem:nessie
-    networks:
-      - lakehouse-network
+      NESSIE_VERSION_STORE_TYPE: IN_MEMORY
 
-  # Dremio for analytics and querying
-  dremio:
-    image: dremio/dremio-oss:24.0
-    container_name: dremio
-    ports:
-      - "9047:9047"
-      - "31010:31010"
-      - "32010:32010"
-    environment:
-      DREMIO_JAVA_SERVER_EXTRA_OPTS: -Dpaths.dist=file:///opt/dremio
-    volumes:
-      - dremio-data:/opt/dremio/data
-    networks:
-      - lakehouse-network
-
-  # Apache Superset for data visualization
-  superset:
-    image: apache/superset:3.0.0
-    container_name: superset
-    ports:
-      - "8088:8088"
-    environment:
-      SUPERSET_SECRET_KEY: supersecretkey
-    volumes:
-      - superset-data:/app/superset_home
-    command: >
-      bash -c "
-        superset db upgrade &&
-        superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin &&
-        superset init &&
-        superset run -h 0.0.0.0 -p 8088 --with-threads --reload --debugger
-      "
-    networks:
-      - lakehouse-network
-
-  # Spark Master for distributed processing
+  # Spark for data processing
   spark-master:
-    image: bitnami/spark:3.5
-    container_name: spark-master
+    build: ./spark
     ports:
       - "8080:8080"
       - "7077:7077"
     environment:
-      SPARK_MODE: master
-      SPARK_RPC_AUTHENTICATION_ENABLED: no
-      SPARK_RPC_ENCRYPTION_ENABLED: no
-      SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED: no
-      SPARK_SSL_ENABLED: no
-    networks:
-      - lakehouse-network
+      - SPARK_MODE=master
+    volumes:
+      - ./spark:/opt/spark/work-dir
+      - ./data:/opt/spark/data
 
-  # Spark Worker for processing tasks
   spark-worker:
-    image: bitnami/spark:3.5
-    container_name: spark-worker
+    build: ./spark
     depends_on:
       - spark-master
     environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark-master:7077
-      SPARK_WORKER_MEMORY: 2G
-      SPARK_WORKER_CORES: 2
-      SPARK_RPC_AUTHENTICATION_ENABLED: no
-      SPARK_RPC_ENCRYPTION_ENABLED: no
-      SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED: no
-      SPARK_SSL_ENABLED: no
-    networks:
-      - lakehouse-network
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    volumes:
+      - ./spark:/opt/spark/work-dir
+      - ./data:/opt/spark/data
+
+  # Dremio for querying
+  dremio:
+    image: dremio/dremio-oss:latest
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "32010:32010"
+    volumes:
+      - dremio_data:/opt/dremio/data
+
+  # Apache Superset for visualization
+  superset:
+    image: apache/superset:latest
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_CONFIG_PATH=/app/superset_config.py
+    volumes:
+      - superset_data:/app/superset_home
 
 volumes:
-  minio-data:
-  dremio-data:
-  superset-data:
-
-networks:
-  lakehouse-network:
-    driver: bridge
+  minio_data:
+  dremio_data:
+  superset_data:
