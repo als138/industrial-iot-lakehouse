@@ -106,22 +106,23 @@ Things you'll need:
 | Superset  | Dashboarding and visualization layer             |
 
 
-**Usage Scenario**
-Simulation: Run the full pipeline locally for experimentation.
+## Usage Scenario
 
-Extension: Replace sample data with real sensor input; deploy on cluster/cloud.
+  Simulation: Run the full pipeline locally for experimentation.
 
-Versioning: Utilize Iceberg + Nessie to track data changes and schema evolution.
+  Extension: Replace sample data with real sensor input; deploy on cluster/cloud.
 
-Visualization: Build real-time dashboards reflecting IoT device performance.
+  Versioning: Utilize Iceberg + Nessie to track data changes and schema evolution.
 
-**Contributing**
+  Visualization: Build real-time dashboards reflecting IoT device performance.
 
-Contributions are welcome! Whether you're:
+## Contributing
 
-Adding sample datasets,
+  Contributions are welcome! Whether you're:
 
-Offering robust production-ready configuration files,
+  Adding sample datasets,
 
-Enhancing dashboards or analytics,
+  Offering robust production-ready configuration files,
+
+  Enhancing dashboards or analytics,
 
