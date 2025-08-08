@@ -1,0 +1,10 @@
+# Update just the Nessie service in your existing docker-compose.yml
+nessie:
+  image: projectnessie/nessie:0.74.0  # Updated from 0.67.0
+  container_name: nessie
+  ports:
+    - "19120:19120"
+  environment:
+    NESSIE_VERSION_STORE_TYPE: IN_MEMORY
+  networks:
+    - iot-network
