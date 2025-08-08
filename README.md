@@ -20,7 +20,7 @@ This project showcases a self-contained, modular pipeline to ingest, store, tran
 ##  Repository Structure
 
 - `configs/` — Configuration files for services (e.g., MinIO, Kafka, Nessie).
-- `data/` — Sample data files or datasets used for ingestion and testing.
+- `data/` — Sample data files or datasets used for ingestion and testing Available in (https://www.kaggle.com/datasets/ziya07/industrial-iot-fault-detection-dataset).
 - `kafka/` — Scripts related to topic setup and data producers/consumers.
 - `spark/` — Spark jobs to process and transform raw IoT data.
 - `docs/` — Documentation, diagrams, architectural overview.
@@ -95,4 +95,33 @@ Things you'll need:
   ![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
 
   
+| Component | Purpose                                          |
+| --------- | ------------------------------------------------ |
+| Kafka     | Real-time ingestion of IoT data                  |
+| MinIO     | S3-compatible storage for raw and processed data |
+| Spark     | ETL and transformation engine                    |
+| Iceberg   | Versioned, transactional data lake storage       |
+| Nessie    | Git-like version control for Iceberg metadata    |
+| Dremio    | SQL-based querying & data virtualization         |
+| Superset  | Dashboarding and visualization layer             |
+
+
+**Usage Scenario**
+Simulation: Run the full pipeline locally for experimentation.
+
+Extension: Replace sample data with real sensor input; deploy on cluster/cloud.
+
+Versioning: Utilize Iceberg + Nessie to track data changes and schema evolution.
+
+Visualization: Build real-time dashboards reflecting IoT device performance.
+
+**Contributing**
+
+Contributions are welcome! Whether you're:
+
+Adding sample datasets,
+
+Offering robust production-ready configuration files,
+
+Enhancing dashboards or analytics,
 
