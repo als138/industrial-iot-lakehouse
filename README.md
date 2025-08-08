@@ -84,18 +84,12 @@ Things you'll need:
           
 5. **Query data using Dremio**
 
-  Apply dremio.sql or run your own SQL via the Dremio UI.
+      Apply dremio.sql or run your own SQL via the Dremio UI.
 
 6. **Visualize insights with Superset**
 
-  Open Superset in your browser, connect to Dremio, and build dashboards.
-
-## Superset Results
-
-  ![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
-
-  
-| Component | Purpose                                          |
+      Open Superset in your browser, connect to Dremio, and build dashboards.
+      | Component | Purpose                                          |
 | --------- | ------------------------------------------------ |
 | Kafka     | Real-time ingestion of IoT data                  |
 | MinIO     | S3-compatible storage for raw and processed data |
@@ -104,6 +98,11 @@ Things you'll need:
 | Nessie    | Git-like version control for Iceberg metadata    |
 | Dremio    | SQL-based querying & data virtualization         |
 | Superset  | Dashboarding and visualization layer             |
+
+## Superset Results
+
+  ![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
+
 
 
 ## Usage Scenario
