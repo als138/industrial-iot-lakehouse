@@ -84,13 +84,15 @@ Things you'll need:
           
 5. **Query data using Dremio**
 
-Apply dremio.sql or run your own SQL via the Dremio UI.
+  Apply dremio.sql or run your own SQL via the Dremio UI.
 
 6. **Visualize insights with Superset**
 
-Open Superset in your browser, connect to Dremio, and build dashboards.
+  Open Superset in your browser, connect to Dremio, and build dashboards.
 
-*Superset Results:*
+  *Superset Results:*
 
-![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
+  ![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
+
+  
 
