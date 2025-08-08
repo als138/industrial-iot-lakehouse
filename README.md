@@ -64,23 +64,23 @@ Things you'll need:
 3. **Run full  pipeline**
    ```bash
     ./run-complete-pipeline.sh
-4. **Straming**
+4. **Straming & Producing**
   
-        *Terminal 1 :*
+   *Terminal 1 :*
   
-        ```bash
-          docker exec -it spark-master spark-submit \
-          --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.iceberg:iceberg-spark-runtime-3.4_2.12:1.5.0 \
-          --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
-          --conf spark.sql.catalog.nessie=org.apache.iceberg.spark.SparkCatalog \
-          --conf spark.sql.catalog.nessie.catalog-impl=org.apache.iceberg.nessie.NessieCatalog \
-          /opt/spark/work-dir/iceberg-streaming-processor.py
-
-    *Terminal 2:*
+   ```bash
+              docker exec -it spark-master spark-submit \
+              --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.iceberg:iceberg-spark-runtime-3.4_2.12:1.5.0 \
+              --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
+              --conf spark.sql.catalog.nessie=org.apache.iceberg.spark.SparkCatalog \
+              --conf spark.sql.catalog.nessie.catalog-impl=org.apache.iceberg.nessie.NessieCatalog \
+                /opt/spark/work-dir/iceberg-streaming-processor.py
+    ```
+   *Terminal 2:*
   
-    ```bash
+   ```bash
            docker exec -it spark-master python /opt/spark/work-dir/data-producer.py
-
+    ```
           
 5. **Query data using Dremio**
 
