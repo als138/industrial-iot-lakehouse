@@ -90,7 +90,7 @@ Things you'll need:
 
   Open Superset in your browser, connect to Dremio, and build dashboards.
 
-##Superset Results
+## Superset Results
 
   ![iot-dashboard-2025-08-04T13-32-34 080Z](https://github.com/user-attachments/assets/9803957f-1fbd-41e5-b972-50e9ad9bcf37)
 
@@ -108,21 +108,21 @@ Things you'll need:
 
 ## Usage Scenario
 
-  Simulation: Run the full pipeline locally for experimentation.
+  -Simulation: Run the full pipeline locally for experimentation.
 
-  Extension: Replace sample data with real sensor input; deploy on cluster/cloud.
+  -Extension: Replace sample data with real sensor input; deploy on cluster/cloud.
 
-  Versioning: Utilize Iceberg + Nessie to track data changes and schema evolution.
+  -Versioning: Utilize Iceberg + Nessie to track data changes and schema evolution.
 
-  Visualization: Build real-time dashboards reflecting IoT device performance.
+  -Visualization: Build real-time dashboards reflecting IoT device performance.
 
 ## Contributing
 
-  Contributions are welcome! Whether you're:
+  -Contributions are welcome! Whether you're:
 
-  Adding sample datasets,
+  -Adding sample datasets,
 
-  Offering robust production-ready configuration files,
+  -Offering robust production-ready configuration files,
 
-  Enhancing dashboards or analytics,
+  -Enhancing dashboards or analytics,
 
