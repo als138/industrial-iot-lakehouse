@@ -1,6 +1,6 @@
 # Industrial IoT Lakehouse
 
-A sample repository demonstrating how to build an Industrial Internet of Things (IoT) Lakehouse architecture using open-source tools like Kafka, Spark, MinIO, Apache Iceberg, Nessie, Dremio, and Superset for end-to-end IoT data processing and analytics.
+It shows how to build a Lakehouse architecture for an industrial Internet of Things (IoT) dataset using open source tools such as Kafka, Spark, MinIO, Apache Iceberg, Nessie, Dremio, and Superset to process and analyze IoT data end-to-end.
 
 ---
 
